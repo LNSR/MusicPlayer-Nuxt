@@ -1,0 +1,73 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id          Int       @id @default(autoincrement())
+  email       String    @unique
+  name        String?
+  playlists   Playlist[]
+  recommendations Recommendation[]
+  createdAt   DateTime  @default(now())
+}
+
+model Artist {
+  id        Int      @id @default(autoincrement())
+  name      String
+  albums    Album[]
+  tracks    Track[]
+}
+
+model Album {
+  id        Int      @id @default(autoincrement())
+  title     String
+  artist    Artist   @relation(fields: [artistId], references: [id])
+  artistId  Int
+  tracks    Track[]
+  releasedAt DateTime
+}
+
+model Track {
+  id        Int      @id @default(autoincrement())
+  title     String
+  album     Album    @relation(fields: [albumId], references: [id])
+  albumId   Int
+  artist    Artist   @relation(fields: [artistId], references: [id])
+  artistId  Int
+  duration  Int      // seconds
+  playlists PlaylistTrack[]
+  recommendations Recommendation[]
+}
+
+model Playlist {
+  id        Int      @id @default(autoincrement())
+  name      String
+  user      User     @relation(fields: [userId], references: [id])
+  userId    Int
+  tracks    PlaylistTrack[]
+  createdAt DateTime @default(now())
+}
+
+model PlaylistTrack {
+  id         Int     @id @default(autoincrement())
+  playlist   Playlist @relation(fields: [playlistId], references: [id])
+  playlistId Int
+  track      Track    @relation(fields: [trackId], references: [id])
+  trackId    Int
+  addedAt    DateTime @default(now())
+}
+
+model Recommendation {
+  id        Int      @id @default(autoincrement())
+  user      User     @relation(fields: [userId], references: [id])
+  userId    Int
+  track     Track    @relation(fields: [trackId], references: [id])
+  trackId   Int
+  reason    String?  // e.g. "Because you liked X"
+  createdAt DateTime @default(now())
+}
