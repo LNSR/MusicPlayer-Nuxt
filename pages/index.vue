@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <label class="input">
+  <div class="flex flex-col items-center">
+    <label class="input w-full max-w-md">
       <svg class="h-[1em] opacity-50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
         <g
           stroke-linejoin="round"
@@ -17,25 +17,5 @@
       <kbd class="kbd kbd-sm">⌘</kbd>
       <kbd class="kbd kbd-sm">K</kbd>
     </label>
-    <label class="input">
-      <svg class="h-[1em] opacity-50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-        <g
-          stroke-linejoin="round"
-          stroke-linecap="round"
-          stroke-width="2.5"
-          fill="none"
-          stroke="currentColor"
-        >
-          <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/>
-          <path d="M14 2v4a2 2 0 0 0 2 2h4"/>
-        </g>
-      </svg>
-      <input type="text" class="grow" placeholder="index.php">
-    </label>
-    <label class="input">
-      Path
-      <input type="text" class="grow" placeholder="src/app/">
-      <span class="badge badge-neutral badge-xs">Optional</span>
-    </label>
-  </div>
+  </div>                                                                            
 </template>

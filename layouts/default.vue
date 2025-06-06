@@ -1,3 +1,16 @@
+<script setup lang="ts">
+import { useAuth } from '~/composables/useAuth'
+import { useRouter } from 'vue-router'
+
+const { user, logout } = useAuth()
+const router = useRouter()
+
+function handleLogout() {
+  logout()
+  router.push('/login')
+}
+</script>
+
 <template>
   <div class="flex flex-col min-h-screen bg-base-100 text-base-content">
     <!-- Header/Navbar -->
@@ -15,12 +28,21 @@
             <li><NuxtLink to="/playlists" class="font-medium">Playlists</NuxtLink></li>
             <li><NuxtLink to="/explore" class="font-medium">Explore</NuxtLink></li>
             <li><NuxtLink to="/recommendations" class="font-medium">Recommendations</NuxtLink></li>
+            <li v-if="user && ['SUPERADMIN', 'ADMIN'].includes(user.role)">
+              <NuxtLink to="/admin" class="font-medium text-error">Admin</NuxtLink>
+            </li>
           </ul>
         </div>
         <div class="navbar-end gap-2">
-          <NuxtLink to="/account" class="btn btn-sm btn-outline">Account</NuxtLink>
-          <NuxtLink to="/login" class="btn btn-sm btn-primary">Login</NuxtLink>
-          <NuxtLink to="/register" class="btn btn-sm btn-secondary">Register</NuxtLink>
+          <template v-if="user">
+            <span class="hidden sm:inline px-2">Hi, {{ user.name }}</span>
+            <NuxtLink to="/account" class="btn btn-sm btn-outline">Account</NuxtLink>
+            <button class="btn btn-sm btn-error" @click="handleLogout">Logout</button>
+          </template>
+          <template v-else>
+            <NuxtLink to="/login" class="btn btn-sm btn-primary">Login</NuxtLink>
+            <NuxtLink to="/register" class="btn btn-sm btn-secondary">Register</NuxtLink>
+          </template>
         </div>
       </div>
     </header>

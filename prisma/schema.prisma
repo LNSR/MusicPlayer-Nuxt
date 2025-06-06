@@ -11,9 +11,17 @@ model User {
   id          Int       @id @default(autoincrement())
   email       String    @unique
   name        String?
+  password    String
+  role        Role      @default(USER)
   playlists   Playlist[]
   recommendations Recommendation[]
   createdAt   DateTime  @default(now())
+}
+
+enum Role {
+  SUPERADMIN
+  ADMIN
+  USER
 }
 
 model Artist {
