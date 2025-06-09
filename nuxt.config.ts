@@ -12,6 +12,7 @@ export default defineNuxtConfig({
     '@nuxt/image',
     '@nuxt/icon',
     '@nuxt/fonts',
-    '@prisma/nuxt'
+    '@prisma/nuxt',
+    '@sidebase/nuxt-auth',
   ]
 })

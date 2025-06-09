@@ -1,12 +1,8 @@
-import { PrismaClient } from '@prisma/client'
+import { PrismaClient, ROLE } from '@prisma/client'
+import type { User as PrismaUser, Track as PrismaTrack } from '@prisma/client'
 
 const prismaClientSingleton = () => {
-  try {
-    return new PrismaClient()
-  } catch (error) {
-    console.error('Failed to initialize PrismaClient:', error)
-    throw error
-  }
+  return new PrismaClient()
 }
 
 declare const globalThis: {
@@ -18,4 +14,6 @@ const prisma =
     ? (globalThis.prismaGlobal ??= prismaClientSingleton())
     : prismaClientSingleton();
 
+export { prisma, ROLE }
+export type { PrismaUser, PrismaTrack }
 export default prisma
