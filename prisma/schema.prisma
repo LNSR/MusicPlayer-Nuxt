@@ -1,0 +1,55 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  SUPERADMIN
+  ADMIN
+  VISITOR
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  password  String   
+  name      String?
+  role      Role     @default(VISITOR)
+  playlists Playlist[]
+}
+
+model Artist {
+  id     Int     @id @default(autoincrement())
+  name   String
+  albums Album[]
+}
+
+model Album {
+  id        Int     @id @default(autoincrement())
+  title     String
+  artist    Artist  @relation(fields: [artistId], references: [id])
+  artistId  Int
+  tracks    Track[]
+  released  DateTime?
+}
+
+model Track {
+  id       Int     @id @default(autoincrement())
+  title    String
+  album    Album   @relation(fields: [albumId], references: [id])
+  albumId  Int
+  duration Int     // duration in seconds
+  playlists Playlist[] @relation("PlaylistTracks")
+}
+
+model Playlist {
+  id      Int      @id @default(autoincrement())
+  name    String
+  user    User     @relation(fields: [userId], references: [id])
+  userId  Int
+  tracks  Track[]  @relation("PlaylistTracks")
+}
