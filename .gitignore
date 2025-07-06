@@ -27,3 +27,6 @@ logs
 *.pem
 *.crt
 *.key
+
+# Music files
+public/uploads

@@ -20,6 +20,13 @@ export class UserService {
         })
     }
 
+    async getRoleOptions() {
+        return prisma.user.findMany({
+            select: { role: true },
+            distinct: ['role']
+        })
+    }
+
     async createUser(data: { email: string, password: string, name?: string, role?: Role }) {
         return prisma.user.create({
             data: {

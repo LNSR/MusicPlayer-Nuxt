@@ -8,10 +8,16 @@ definePageMeta({
     middleware: 'admin'
 })
 
-const { users, loading, error, fetchUsers, changeRole, deleteUser, createForm, createError, createLoading, createUser } = useUserManagement()
+const { users, loading, error, fetchUsers, changeRole, deleteUser, createForm, createError, createLoading, createUser, roleOptions, fetchRoleOptions } = useUserManagement()
 
-onMounted(fetchUsers)
-onActivated(fetchUsers)
+onMounted(() => {
+  fetchUsers()
+  fetchRoleOptions()
+})
+onActivated(() => {
+  fetchUsers()
+  fetchRoleOptions()
+})
 
 const showCreateModal = ref(false)
 const showDeleteModal = ref(false)
@@ -20,8 +26,11 @@ const userToDelete = ref<{ id: string, name?: string } | undefined>(undefined)
 function openCreateModal() {
     showCreateModal.value = true
 }
-function openDeleteModal(user: { id: string, name?: string }) {
-    userToDelete.value = user
+function openDeleteModal(user: { id: number | string; name: string | null }) {
+    userToDelete.value = {
+        id: String(user.id),
+        name: user.name ?? undefined
+    }
     showDeleteModal.value = true
 }
 function closeCreateModal() {
@@ -37,7 +46,7 @@ async function handleCreateUser() {
 }
 async function handleDeleteUser() {
     if (userToDelete.value) {
-        await deleteUser(userToDelete.value.id)
+        await deleteUser(Number(userToDelete.value.id))
         closeDeleteModal()
     }
 }
@@ -75,6 +84,7 @@ async function handleDeleteUser() {
                     <table class="table w-full">
                         <thead>
                             <tr>
+                                <th>No</th>
                                 <th>Name</th>
                                 <th>Email</th>
                                 <th>Role</th>
@@ -82,7 +92,8 @@ async function handleDeleteUser() {
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="user in users" :key="user.id">
+                            <tr v-for="(user, index) in users" :key="user.id">
+                                <td>{{ index + 1 }}</td>
                                 <td>{{ user.name || '-' }}</td>
                                 <td>{{ user.email }}</td>
                                 <td>
@@ -92,23 +103,27 @@ async function handleDeleteUser() {
                                         :disabled="user.role === 'SUPERADMIN'"
                                         @change="changeRole(user.id, user.role)"
                                     >
-                                        <option value="SUPERADMIN">SUPERADMIN</option>
-                                        <option value="ADMIN">ADMIN</option>
-                                        <option value="VISITOR">VISITOR</option>
+                                        <option
+                                            v-for="role in roleOptions"
+                                            :key="role.value"
+                                            :value="role.value"
+                                        >
+                                            {{ role.label }}
+                                        </option>
                                     </select>
                                 </td>
                                 <td class="text-center">
                                     <button
                                         class="btn btn-error btn-xs rounded"
                                         :disabled="user.role === 'SUPERADMIN'"
-                                        @click="openDeleteModal(user)"
+                                        @click="openDeleteModal({ id: user.id, name: user.name })"
                                     >
                                         Delete
                                     </button>
                                 </td>
                             </tr>
                             <tr v-if="!loading && users.length === 0">
-                                <td colspan="4" class="text-center text-base-content/60">No users found.</td>
+                                <td colspan="5" class="text-center text-base-content/60">No users found.</td>
                             </tr>
                         </tbody>
                     </table>

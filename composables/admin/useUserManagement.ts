@@ -11,6 +11,7 @@ export function useUserManagement() {
   const users = ref<User[]>([])
   const loading = ref(true)
   const error = ref<string | null>(null)
+  const roleOptions = ref<{ value: string; label: string }[]>([])
 
   const createForm = ref({
     name: '',
@@ -31,6 +32,17 @@ export function useUserManagement() {
       error.value = err.message || 'Failed to fetch users'
     } finally {
       loading.value = false
+    }
+  }
+
+  async function fetchRoleOptions() {
+    try {
+      const data = await $fetch<string[]>('/api/admin/users/roles')
+      roleOptions.value = (data || [])
+        .filter(role => role !== 'SUPERADMIN')
+        .map(role => ({ value: role, label: role }))
+    } catch (err: any) {
+      error.value = err.message || 'Failed to fetch role options'
     }
   }
 
@@ -64,7 +76,6 @@ export function useUserManagement() {
   }
 
   async function deleteUser(userId: number) {
-    if (!confirm('Are you sure you want to delete this user?')) return
     try {
       await $fetch(`/api/admin/users/${userId}`, { method: 'DELETE' })
       users.value = users.value.filter(u => u.id !== userId)
@@ -78,6 +89,8 @@ export function useUserManagement() {
     loading,
     error,
     fetchUsers,
+    fetchRoleOptions,
+    roleOptions,
     createForm,
     createError,
     createLoading,

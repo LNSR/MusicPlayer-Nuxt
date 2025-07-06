@@ -14,3 +14,4 @@ Provide project context and coding guidelines that AI should follow when generat
 - Follow best practices for security, including input validation and sanitization.
 - Use DaisyUI `.github/instructions/daisyui.md` for styling.
 - Use ESLint for code reference linting and maintain consistent code quality across the project.
+- use `wavesurfer.js` for audio playback and visualization and `music-metadata` for extracting metadata from audio files.
