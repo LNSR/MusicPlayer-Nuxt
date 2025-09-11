@@ -1,0 +1,41 @@
+{
+  "name": "nuxt-app",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare",
+    "typecheck": "nuxt typecheck"
+  },
+  "dependencies": {
+    "@nuxt/ui": "3.3.4",
+    "@pinia/nuxt": "^0.11.2",
+    "@prisma/nuxt": "^0.3.0",
+    "argon2": "^0.44.0",
+    "music-metadata": "^11.9.0",
+    "nuxt": "^4.1.2",
+    "nuxt-music-flow": "1.1.6",
+    "pinia": "^3.0.3",
+    "redis": "^5.8.2",
+    "vue": "^3.5.21",
+    "vue-router": "^4.5.1"
+  },
+  "trustedDependencies": [
+    "@parcel/watcher",
+    "@prisma/client",
+    "@tailwindcss/oxide",
+    "argon2",
+    "esbuild",
+    "vue-demi"
+  ],
+  "devDependencies": {
+    "@types/node": "^24.5.0",
+    "@types/redis": "^4.0.11",
+    "@types/wicg-file-system-access": "^2023.10.6",
+    "typescript": "^5.9.2",
+    "vue-tsc": "^3.0.7"
+  }
+}

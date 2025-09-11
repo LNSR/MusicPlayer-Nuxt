@@ -1,0 +1,31 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Nuxt Build",
+			"type": "shell",
+			"command": "bun run build --bun",
+			"group": "build",
+			"problemMatcher": []
+		},
+		{
+			"label": "Nuxt Dev",
+			"type": "shell",
+			"command": "bun run dev --bun --host",
+			"group": "test",
+			"problemMatcher": []
+		},
+		{
+			"label": "Nuxt Generate",
+			"type": "shell",
+			"command": "bun run generate --bun",
+			"problemMatcher": []
+		},
+		{
+			"label": "Nuxt Preview",
+			"type": "shell",
+			"command": "bun run preview --bun",
+			"problemMatcher": []
+		}
+	]
+}

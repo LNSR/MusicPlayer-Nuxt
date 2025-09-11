@@ -1,0 +1,60 @@
+{
+  "servers": {
+    "playwright": {
+      "command": "bunx",
+      "args": [
+        "-y",
+        "@playwright/mcp@latest",
+        "--ignore-https-errors",
+        "--browser=chrome-beta",
+        "--isolated"
+      ],
+      "type": "stdio"
+    },
+    "context7": {
+      "url": "https://mcp.context7.com/mcp",
+      "type": "http"
+    },
+    "sequentialthinking": {
+      "type": "http",
+      "url": "https://remote.mcpservers.org/sequentialthinking/mcp"
+    },
+    "memory": {
+      "command": "bunx",
+      "args": ["-y", "@modelcontextprotocol/server-memory"],
+      "type": "stdio"
+    },
+    "redis": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "--network",
+        "host",
+        "--env-file",
+        "${workspaceFolder}/.env",
+        "mcp/redis"
+      ],
+      "type": "stdio"
+    },
+    "postgres": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "--network",
+        "host",
+        "-u",
+        "1000:1000",
+        "--env-file",
+        "${workspaceFolder}/.env",
+        "mcp/postgres:latest",
+        "postgresql://postgres:postgres@localhost:5432/musicplatform"
+      ],
+      "type": "stdio"
+    }
+  },
+  "inputs": []
+}
